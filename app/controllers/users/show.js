@@ -1,4 +1,5 @@
 const User = require('../../models/user.js')
+const JWT = require('../../jwt')
 
 /**
  * Create
@@ -8,6 +9,7 @@ class Show {
   constructor (app, connect) {
     this.app = app
     this.UserModel = connect.model('User', User)
+    this.jwt = new JWT()
 
     this.run()
   }
@@ -16,7 +18,7 @@ class Show {
    * middleware
    */
   middleware () {
-    this.app.get('/user/show/:id', (req, res) => {
+    this.app.get('/user/show/:id', this.jwt.express(), (req, res) => {
       try {
         const { id } = req.params
 
